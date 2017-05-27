@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<META charset='UTF8'>
+<script type="text/javascript" src='jquery.js'></script>
+	<title>1</title>
+</head>
+<body>
+<canvas id="canvas">1</canvas>
+<script>
+var cellSize = 20,
+	example = document.getElementById('canvas'),
+	mapArea = [],
+	dir = 0,
+	z,
+	timer = setInterval(function(){move();}, 1000),
+	ImageData;
+	ctx = example.getContext('2d');
+	example.width = cellSize * 10;
+	example.height = cellSize * 21;
+function SetCanvas(){
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	matrixArray(21,10);
+};
+SetCanvas();
+function figL(x,y){
+	SetCanvas();
+	ctx.fillStyle = 'yellow';
+	colorCell(x+6,y+1);	colorCell(x+6,y+2);	colorCell(x+6,y+3);	colorCell(x+5,y+3);
+};
+function figRect(x,y){
+	SetCanvas();
+	ctx.fillStyle = 'blue';
+	colorCell(x+5,y+1);	colorCell(x+6,y+1);	colorCell(x+5,y+2);	colorCell(x+6,y+2);
+};
+function figLine(x,y){
+	SetCanvas();
+	ctx.fillStyle = 'green';
+	colorCell(x+5,y+1);	colorCell(x+5,y+2);	colorCell(x+5,y+3);	colorCell(x+5,y+4);
+};
+function figTrial(x,y){
+	SetCanvas();
+	ctx.fillStyle = 'violet';
+	colorCell(x+4,y+1);	colorCell(x+5,y+1);	colorCell(x+6,y+1);	colorCell(x+5,y+2);
+};
+function figTrial_rot1(x,y){
+	SetCanvas();
+	ctx.fillStyle = 'red';
+	colorCell(x+4,y+1);	colorCell(x+5,y+1);	colorCell(x+6,y+1);	colorCell(x+5,y+2);
+}
+function figZ(x,y){
+	SetCanvas();
+	ctx.fillStyle = 'red';
+	colorCell(x+4,y+1);	colorCell(x+4,y+2);	colorCell(x+5,y+2);	colorCell(x+5,y+3);
+};
+function figZ_rot(x,y){
+	SetCanvas();
+	ctx.fillStyle = 'red';
+	colorCell(x+4,y+3);	colorCell(x+5,y+3);	colorCell(x+5,y+2);	colorCell(x+6,y+2);
+}
+ // document.onkeydown = function(event){
+ // 	events = event;
+ // 	if(events.keyCode == 40){
+ // 		figZ_rot(0,0);
+ // 	}
+ // }
+
+function matrixArray(rows,columns){
+  var map = new Array();
+  for(var i=1; i<columns+1; i++){
+    map[i] = new Array();
+    for(var j=1; j<rows+1; j++){
+      map[i][j] = ctx.strokeRect(i*cellSize, j*cellSize, i*cellSize, j*cellSize);
+      mapArea = map;  }
+  }  return map;
+}
+function colorCell(x,y){
+	ctx.strokeStyle = 'black';
+	mapArea[x][y] += ctx.fillRect(x*cellSize, y*cellSize, cellSize, cellSize);
+	mapArea[x][y] += ctx.strokeRect(x*cellSize, y*cellSize, cellSize, cellSize);
+};
+
+function moveDown(k) {
+  figZ(0, k-1); // СЮДА ВСТАВИТЬ ФУНКЦИЮ РАНДОМНОГО ВЫЗОВА ФИГУР
+};
+
+function move() {
+	document.onkeydown = function(event){
+	events = event;
+		if(events.keyCode == 32){
+			if(dir < 18 && dir>=0){
+  				dir += 1;
+  				rotateZ(dir);
+			}
+			if(events.keyCode == false)	{
+				if(dir < 18 && dir>=0){   //figLine (dir<17), figL && figZ(dir<18), figRect && figTrial(dir<19)
+		  			dir += 1;
+		  			moveDown(dir);
+		  		} else {
+		  			clearInterval(timer);
+		  			}
+		  	}
+		}}
+	};
+
+
+
+function rotateZ(k){
+	figZ_rot(0, k-1);
+};
+
+
+</script>
+</body>
+</html>
